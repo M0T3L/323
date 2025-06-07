@@ -13,10 +13,8 @@ const path = require('path');
 app.use(express.static('public'));
 app.use(express.json());
 
-// Store active rooms and their users
 const rooms = new Map();
 
-// Generate a random room ID
 function generateRoomId() {
     return crypto.randomBytes(4).toString('hex');
 }
@@ -42,7 +40,7 @@ io.on('connection', (socket) => {
             socket.emit('roomJoined', { roomId, username });
             io.to(roomId).emit('userJoined', { username, users: room.users });
         } else {
-            socket.emit('error', 'Room not found');
+            socket.emit('error', 'Wrong password!');
         }
     });
 
